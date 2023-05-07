@@ -2,17 +2,15 @@ package com.trading.demo.service;
 
 import com.trading.demo.configuration.AppProperties;
 import com.trading.demo.dto.ticker.*;
-import com.trading.demo.entity.Ticker;
+import com.trading.demo.entity.TickerEntity;
 import com.trading.demo.repository.TickerRepository;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static com.trading.demo.utils.Constants.*;
@@ -43,7 +41,7 @@ public class TradingService {
         List<BinanceTickerDTO> binanceTickerDTOList = getBinanceTicker();
         List<HuobiTickerDTO> huobiTickerDTOList = getHuobiTicker();
 
-        List<Ticker> listTicker = new ArrayList<>();
+        List<TickerEntity> listTickerEntity = new ArrayList<>();
 
 
             for (String crypto : cryptos) {
@@ -75,17 +73,17 @@ public class TradingService {
                 System.out.println("SELL MAP: " + sellMap.get(crypto));
 
 //                // save best pricing to db
-                Ticker ticker = new Ticker();
-                ticker.setPair(crypto);
-                ticker.setBuyPrice(buyMap.get(crypto));
-                ticker.setSellPrice(sellMap.get(crypto));
-                ticker.setBuyPlatform(buyPlatform);
-                ticker.setSellPlatform(sellPlatform);
-                ticker.setCreatedAt(new Date());
-                listTicker.add(ticker);
+                TickerEntity tickerEntity = new TickerEntity();
+                tickerEntity.setPair(crypto);
+                tickerEntity.setBuyPrice(buyMap.get(crypto));
+                tickerEntity.setSellPrice(sellMap.get(crypto));
+                tickerEntity.setBuyPlatform(buyPlatform);
+                tickerEntity.setSellPlatform(sellPlatform);
+                tickerEntity.setCreatedAt(new Date());
+                listTickerEntity.add(tickerEntity);
             }
 
-        tickerRepository.saveAll(listTicker);
+        tickerRepository.saveAll(listTickerEntity);
 
 
     }
@@ -98,6 +96,36 @@ public class TradingService {
     public List<HuobiTickerDTO> getHuobiTicker() {
         HuobiDTO response = (HuobiDTO) restTemplateService.getRestForObject(appProperties.getHuobiUrl(), null, HuobiDTO.class);
         return response.getData();
+    }
+
+    public TickerEntity getBestPriceByCrypto(String crypto) {
+        Optional<TickerEntity> latestBtcTicker = tickerRepository.findAll().stream().filter(c -> StringUtils.isNotBlank(c.getPair()) && c.getPair().toLowerCase().equals(crypto))
+                .sorted(Comparator.comparing(TickerEntity::getId).reversed())
+                .findFirst();
+
+        return latestBtcTicker.get();
+    }
+
+    public List<TickerEntity> getLatestBestPricing() {
+        List<TickerEntity> tickerList = new ArrayList<>();
+
+        Optional<TickerEntity> latestBtcTicker = tickerRepository.findAll().stream().filter(c -> StringUtils.isNotBlank(c.getPair()) && c.getPair().toLowerCase().equals(BTC_USDT.toLowerCase()))
+                .sorted(Comparator.comparing(TickerEntity::getId).reversed())
+                .findFirst();
+
+        Optional<TickerEntity> latestEthTicker = tickerRepository.findAll().stream().filter(c -> StringUtils.isNotBlank(c.getPair()) && c.getPair().toLowerCase().equals(ETH_USDT.toLowerCase()))
+                .sorted(Comparator.comparing(TickerEntity::getCreatedAt).reversed())
+                .findFirst();
+
+        if (latestBtcTicker.isPresent()) {
+            tickerList.add(latestBtcTicker.get());
+        }
+
+        if (latestEthTicker.isPresent()) {
+            tickerList.add(latestEthTicker.get());
+        }
+
+        return tickerList;
     }
 
 }

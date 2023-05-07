@@ -1,7 +1,7 @@
 package com.trading.demo.repository;
 
-import com.trading.demo.entity.Ticker;
+import com.trading.demo.entity.TickerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TickerRepository extends JpaRepository<Ticker, Integer> {
+public interface TickerRepository extends JpaRepository<TickerEntity, Integer> {
 }

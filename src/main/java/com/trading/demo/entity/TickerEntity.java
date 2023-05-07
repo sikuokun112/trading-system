@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 @Table(name = "TRADING_TICKER")
 @NoArgsConstructor
-public class Ticker {
+public class TickerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
