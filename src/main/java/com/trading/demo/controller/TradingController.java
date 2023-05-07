@@ -1,7 +1,7 @@
 package com.trading.demo.controller;
 
 
-import com.trading.demo.common.ResponseApi;
+import com.trading.demo.common.Response;
 import com.trading.demo.entity.TickerEntity;
 import com.trading.demo.entity.WalletEntity;
 import com.trading.demo.request.TradeCryptoRequest;
@@ -20,21 +20,36 @@ public class TradingController {
     private TradingService tradingService;
 
     @GetMapping("/aggregated-price/latest")
-    public ResponseApi<List<TickerEntity>> getLatestBestPricing() {
-        List<TickerEntity> tickerList = tradingService.getLatestBestPricing();
-        return new ResponseApi<>(tickerList, HttpStatus.OK);
+    public Response<List<TickerEntity>> getLatestBestPricing() {
+        try {
+            List<TickerEntity> tickerList = tradingService.getLatestBestPricing();
+            return new Response().of(tickerList, "Success", HttpStatus.OK.value());
+        } catch (Exception e) {
+            return new Response().of(null, e.getMessage(), HttpStatus.BAD_REQUEST.value());
+
+        }
     }
 
     @GetMapping("/price/{crypto}")
-    public ResponseApi<TickerEntity> getBestPricingByCrypto(@PathVariable String crypto) {
-        TickerEntity ticker = tradingService.getBestPriceByCrypto(crypto);
-        return new ResponseApi<>(ticker, HttpStatus.OK);
+    public Response<TickerEntity> getBestPricingByCrypto(@PathVariable String crypto) {
+        try {
+            TickerEntity ticker = tradingService.getBestPriceByCrypto(crypto);
+            return new Response().of(ticker, "Success", HttpStatus.OK.value());
+        } catch (Exception e) {
+            return new Response().of(null, e.getMessage(), HttpStatus.BAD_REQUEST.value());
+        }
+
     }
 
     @PostMapping("/trade-crypto")
-    public ResponseApi<WalletEntity> buyAction(@RequestBody TradeCryptoRequest request) {
-        WalletEntity walletEntity = tradingService.tradeAction(request.getUserId(), request.getCrypto(), request.getAmount(), request.getAction());
-        return new ResponseApi<>(walletEntity, HttpStatus.OK);
+    public Response<WalletEntity> buyAction(@RequestBody TradeCryptoRequest request) {
+        try {
+            WalletEntity walletEntity = tradingService.tradeAction(request.getUserId(), request.getCrypto(), request.getAmount(), request.getAction());
+            return new Response().of(walletEntity, "Success", HttpStatus.OK.value());
+        } catch (Exception e) {
+            return new Response().of(null, e.getMessage(), HttpStatus.BAD_REQUEST.value());
+        }
+
     }
 
 }

@@ -81,12 +81,6 @@ public class TradingService {
                 }
                 sellMap.computeIfPresent(crypto, (key, oldValue) -> sellPrice);
 
-
-                System.out.println(crypto);
-                System.out.println(buyPrice+"_"+sellPrice+"|"+buyPlatform+"_"+sellPlatform);
-                System.out.println("BUY MAP: " + buyMap.get(crypto));
-                System.out.println("SELL MAP: " + sellMap.get(crypto));
-
 //                // save best pricing to db
                 TickerEntity tickerEntity = new TickerEntity();
                 tickerEntity.setPair(crypto);
@@ -144,39 +138,43 @@ public class TradingService {
     }
 
     public WalletEntity tradeAction(Long userId, String crypto, Double amount, String action) {
-        Date current = new Date();
-        TickerEntity ticker =  getBestPriceByCrypto(crypto);
+        try {
+            Date current = new Date();
+            TickerEntity ticker =  getBestPriceByCrypto(crypto);
+            UserEntity user = userRepository.findById(userId).orElse(null);
+            if (Objects.nonNull(user)) {
+                TradeStrategy tradeStrategy = null;
+                WalletEntity walletUser = user.getWalletEntity();
+                Double balanceBefore = walletUser.getBalance();
+                AssetEntity asset = assetEntity.findAssetEntityByCryptoIdAndWalletEntity(crypto, walletUser);
 
+                // detect action user
+                if (action.equals("BUY")) {
+                    tradeStrategy = new BuyStrategy("BUY", user, ticker, asset, crypto, amount);
+                } else if (action.equals("SELL")) {
+                    tradeStrategy = new SellStrategy("SELL", user, ticker, asset, crypto, amount);
+                }
 
-        UserEntity user = userRepository.findById(userId).orElse(null);
-        if (Objects.nonNull(user)) {
-            TradeStrategy tradeStrategy = null;
-            WalletEntity walletUser = user.getWalletEntity();
-            Double balanceBefore = walletUser.getBalance();
-            AssetEntity asset = assetEntity.findAssetEntityByCryptoIdAndWalletEntity(crypto, walletUser);
+                Double balanceAfterTrans = tradeStrategy.calculateBalanceAfterTrans();
+                if (tradeStrategy.checkAvailableTrans()) {
+                    walletUser = tradeStrategy.updateListAssetAmountInWallet();
+                    walletUser.setBalance(balanceAfterTrans);
 
-            // detect action user
-            if (action.equals("BUY")) {
-                tradeStrategy = new BuyStrategy("BUY", user, ticker, asset, crypto, amount);
-            } else if (action.equals("SELL")) {
-                tradeStrategy = new SellStrategy("SELL", user, ticker, asset, crypto, amount);
+                    userRepository.save(user);
+                    // store history transaction trading
+                    storeHistoryTransaction(userId, crypto, amount, tradeStrategy.getPriceAction(), balanceBefore, balanceAfterTrans, action, tradeStrategy.getPlatformAction(), ticker.getId());
+                    return walletUser;
+                } else {
+                    throw new RuntimeException("Cannot do action because your wallet do not have enough");
+                }
+            } else {
+                throw new RuntimeException("User does not exist");
             }
-
-            Double balanceAfterTrans = tradeStrategy.calculateBalanceAfterTrans();
-            ;
-            // check current balance user is available to buy or not
-            if (tradeStrategy.checkAvailableTrans()) {
-                walletUser = tradeStrategy.updateListAssetAmountInWallet();
-                walletUser.setBalance(balanceAfterTrans);
-
-                userRepository.save(user);
-                // store history transaction trading
-                storeHistoryTransaction(userId, crypto, amount, tradeStrategy.getPriceAction(), balanceBefore, balanceAfterTrans, action, tradeStrategy.getPlatformAction(), ticker.getId());
-                return walletUser;
-            }
+        } catch (Exception e) {
+            log.error("Exception !");
+            throw new RuntimeException(e.getMessage());
         }
-        log.info("Do nothing because user is not exist !");
-        return null;
+
     }
 
     public void storeHistoryTransaction(Long userId, String crypto, Double amount, Double price, Double balanceBefore, Double balanceAfter, String action, String platform, Long tickerId) {
