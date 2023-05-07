@@ -5,15 +5,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="82a46284-719c-4dc9-95ba-910eb1de3210" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/common/BuyStrategy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/common/SellStrategy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/common/TradeAction.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/common/TradeStrategy.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/controller/UserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/entity/AssetEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/entity/TradingHistoryEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/entity/UserEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/entity/WalletEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/listener/UserEntityListeners.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/repository/AssetRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/repository/TradingHistoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/repository/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/repository/WalletRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/request/CreateUserRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/request/TradeCryptoRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/D:/data/demo.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/D:/data/demo.mv.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/trading/demo/controller/TradingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/controller/TradingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/trading/demo/entity/Ticker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/entity/TickerEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/trading/demo/repository/TickerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/repository/TickerRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/trading/demo/service/TradingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/service/TradingService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/trading/demo/controller/TradingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/trading/demo/controller/TradingController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/trading/demo/repository/TickerRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/trading/demo/repository/TickerRepository.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/trading/demo/service/TradingService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/trading/demo/service/TradingService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/trading/demo/utils/RestUtils.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,6 +107,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.trading.demo.listener" />
       <recent name="com.trading.demo.configuration" />
       <recent name="com.trading.demo.common" />
     </key>
@@ -127,7 +144,7 @@
       <workItem from="1683363435973" duration="1168000" />
       <workItem from="1683365236486" duration="2921000" />
       <workItem from="1683368224446" duration="24553000" />
-      <workItem from="1683428175060" duration="3295000" />
+      <workItem from="1683428175060" duration="22717000" />
     </task>
     <servers />
   </component>
@@ -187,18 +204,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/trading/demo/service/TradingService.java</url>
-          <line>97</line>
-          <option name="timeStamp" value="3" />
+          <line>120</line>
+          <option name="timeStamp" value="9" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/com/trading/demo/service/TradingService.java</url>
-          <line>92</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/com/trading/demo/service/RestTemplateService.java</url>
-          <line>40</line>
-          <option name="timeStamp" value="7" />
+          <line>164</line>
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

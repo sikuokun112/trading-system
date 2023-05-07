@@ -1,9 +1,15 @@
 package com.trading.demo.service;
 
+import com.trading.demo.common.BuyStrategy;
+import com.trading.demo.common.SellStrategy;
+import com.trading.demo.common.TradeStrategy;
 import com.trading.demo.configuration.AppProperties;
 import com.trading.demo.dto.ticker.*;
-import com.trading.demo.entity.TickerEntity;
+import com.trading.demo.entity.*;
+import com.trading.demo.repository.AssetRepository;
 import com.trading.demo.repository.TickerRepository;
+import com.trading.demo.repository.TradingHistoryRepository;
+import com.trading.demo.repository.UserRepository;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +36,15 @@ public class TradingService {
 
     @Autowired
     private TickerRepository tickerRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private AssetRepository assetEntity;
+
+    @Autowired
+    private TradingHistoryRepository tradingHistoryRepository;
 
     @Scheduled(fixedDelayString = "10000")
     public void storePricing() {
@@ -99,7 +114,7 @@ public class TradingService {
     }
 
     public TickerEntity getBestPriceByCrypto(String crypto) {
-        Optional<TickerEntity> latestBtcTicker = tickerRepository.findAll().stream().filter(c -> StringUtils.isNotBlank(c.getPair()) && c.getPair().toLowerCase().equals(crypto))
+        Optional<TickerEntity> latestBtcTicker = tickerRepository.findAll().stream().filter(c -> StringUtils.isNotBlank(c.getPair()) && c.getPair().toLowerCase().equals(crypto.toLowerCase()))
                 .sorted(Comparator.comparing(TickerEntity::getId).reversed())
                 .findFirst();
 
@@ -128,4 +143,57 @@ public class TradingService {
         return tickerList;
     }
 
+    public WalletEntity tradeAction(Long userId, String crypto, Double amount, String action) {
+        Date current = new Date();
+        TickerEntity ticker =  getBestPriceByCrypto(crypto);
+
+
+        UserEntity user = userRepository.findById(userId).orElse(null);
+        if (Objects.nonNull(user)) {
+            TradeStrategy tradeStrategy = null;
+            WalletEntity walletUser = user.getWalletEntity();
+            Double balanceBefore = walletUser.getBalance();
+            AssetEntity asset = assetEntity.findAssetEntityByCryptoIdAndWalletEntity(crypto, walletUser);
+
+            // detect action user
+            if (action.equals("BUY")) {
+                tradeStrategy = new BuyStrategy("BUY", user, ticker, asset, crypto, amount);
+            } else if (action.equals("SELL")) {
+                tradeStrategy = new SellStrategy("SELL", user, ticker, asset, crypto, amount);
+            }
+
+            Double balanceAfterTrans = tradeStrategy.calculateBalanceAfterTrans();
+            ;
+            // check current balance user is available to buy or not
+            if (tradeStrategy.checkAvailableTrans()) {
+                walletUser = tradeStrategy.updateListAssetAmountInWallet();
+                walletUser.setBalance(balanceAfterTrans);
+
+                userRepository.save(user);
+                // store history transaction trading
+                storeHistoryTransaction(userId, crypto, amount, tradeStrategy.getPriceAction(), balanceBefore, balanceAfterTrans, action, tradeStrategy.getPlatformAction(), ticker.getId());
+                return walletUser;
+            }
+        }
+        log.info("Do nothing because user is not exist !");
+        return null;
+    }
+
+    public void storeHistoryTransaction(Long userId, String crypto, Double amount, Double price, Double balanceBefore, Double balanceAfter, String action, String platform, Long tickerId) {
+        Date curr = new Date();
+        TradingHistoryEntity tradingHistory = new TradingHistoryEntity();
+        tradingHistory.setUserId(userId);
+        tradingHistory.setCrypto(crypto);
+        tradingHistory.setAmount(amount);
+        tradingHistory.setPrice(price);
+        tradingHistory.setBalanceBefore(balanceBefore);
+        tradingHistory.setBalanceAfter(balanceAfter);
+        tradingHistory.setAction(action);
+        tradingHistory.setPlatform(platform);
+        tradingHistory.setTickerId(tickerId);
+        tradingHistory.setCreatedAt(curr);
+        tradingHistory.setUpdatedAt(curr);
+
+        tradingHistoryRepository.save(tradingHistory);
+    }
 }

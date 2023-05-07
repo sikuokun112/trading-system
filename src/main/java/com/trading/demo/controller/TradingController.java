@@ -3,15 +3,12 @@ package com.trading.demo.controller;
 
 import com.trading.demo.common.ResponseApi;
 import com.trading.demo.entity.TickerEntity;
+import com.trading.demo.entity.WalletEntity;
+import com.trading.demo.request.TradeCryptoRequest;
 import com.trading.demo.service.TradingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,4 +30,11 @@ public class TradingController {
         TickerEntity ticker = tradingService.getBestPriceByCrypto(crypto);
         return new ResponseApi<>(ticker, HttpStatus.OK);
     }
+
+    @PostMapping("/trade-crypto")
+    public ResponseApi<WalletEntity> buyAction(@RequestBody TradeCryptoRequest request) {
+        WalletEntity walletEntity = tradingService.tradeAction(request.getUserId(), request.getCrypto(), request.getAmount(), request.getAction());
+        return new ResponseApi<>(walletEntity, HttpStatus.OK);
+    }
+
 }
