@@ -5,21 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="82a46284-719c-4dc9-95ba-910eb1de3210" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/common/Response.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/error/ErrorResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/D:/data/demo.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/D:/data/demo.mv.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/trading/demo/common/ResponseApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/common/ResponseApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/trading/demo/controller/TradingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/controller/TradingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/trading/demo/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/trading/demo/repository/TradingHistoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/repository/TradingHistoryRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/trading/demo/service/TradingService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/service/TradingService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/trading/demo/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/trading/demo/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/trading/demo/controller/TradingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/trading/demo/controller/TradingController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/trading/demo/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/trading/demo/controller/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/trading/demo/repository/TradingHistoryRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/trading/demo/repository/TradingHistoryRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/trading/demo/service/TradingService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/trading/demo/service/TradingService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/trading/demo/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/trading/demo/service/UserService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,6 +84,9 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/main/resources/postman" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.trading.demo.common" />
       <recent name="com.trading.demo.error" />
@@ -135,7 +126,7 @@
       <workItem from="1683363435973" duration="1168000" />
       <workItem from="1683365236486" duration="2921000" />
       <workItem from="1683368224446" duration="24553000" />
-      <workItem from="1683428175060" duration="26801000" />
+      <workItem from="1683428175060" duration="28677000" />
     </task>
     <servers />
   </component>

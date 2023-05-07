@@ -57,7 +57,7 @@ public class TradingService {
         List<HuobiTickerDTO> huobiTickerDTOList = getHuobiTicker();
 
         List<TickerEntity> listTickerEntity = new ArrayList<>();
-
+        log.info("retrieve and store the best pricing.");
 
             for (String crypto : cryptos) {
                 BinanceTickerDTO binanceTicker = (BinanceTickerDTO) TickerFactory.getTickerTradingSystem(BINANCE).getTicker(binanceTickerDTOList, crypto);
