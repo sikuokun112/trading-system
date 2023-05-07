@@ -17,6 +17,10 @@ import java.util.Date;
 public class AssetEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "cryptoId")
     private String cryptoId;
 
     @Column(name = "amount")
